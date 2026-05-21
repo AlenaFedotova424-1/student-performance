@@ -2,7 +2,7 @@
 from collections import defaultdict
 from django.views.generic.base import TemplateView
 from .models import Score
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Student
 
@@ -52,5 +52,10 @@ class StudentUpdateView(UpdateView):
     model = Student
     fields = ['name', 'surname', 'email']
     template_name = 'student_form.html'
+    success_url = reverse_lazy('index')
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    template_name = 'student_confirm_delete.html'
     success_url = reverse_lazy('index')
 

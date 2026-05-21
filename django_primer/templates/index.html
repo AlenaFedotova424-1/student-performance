@@ -36,9 +36,14 @@
                              {% for score in statistics.scores %}
                                 <td>{{score}}</td>
                               {% endfor %}
-                            <td>
+                            <td class="text-nowrap">
                                 <a href="{% url 'student_edit' statistics.student.id %}" class="btn btn-xs btn-primary">
-                                    <span class="glyphicon glyphicon-pencil"></span> Редактировать
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a href="{% url 'student_delete' statistics.student.id %}" class="btn btn-xs-danger"
+                                onclick="return confirm('Точно удалить {{ statistics.student.fio}}?);">
+                                    <span class="glyphicon glyphicon-trash"></span>
+
                                 </a>
                             </td>
                         </tr>
