@@ -25,6 +25,7 @@
                     {% for subject in subjects %}
                       <th>{{subject}}</th>
                     {% endfor %}
+                    <th>Действия</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,11 @@
                              {% for score in statistics.scores %}
                                 <td>{{score}}</td>
                               {% endfor %}
+                            <td>
+                                <a href="{% url 'student_edit' statistics.student.id %}" class="btn btn-xs btn-primary">
+                                    <span class="glyphicon glyphicon-pencil"></span> Редактировать
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

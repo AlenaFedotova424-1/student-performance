@@ -2,7 +2,7 @@
 from collections import defaultdict
 from django.views.generic.base import TemplateView
 from .models import Score
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from .models import Student
 
@@ -47,3 +47,10 @@ class StudentCreateView(CreateView):
     fields = ['name', 'surname', 'email']
     template_name = 'student_form.html'
     success_url = reverse_lazy('index')
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    fields = ['name', 'surname', 'email']
+    template_name = 'student_form.html'
+    success_url = reverse_lazy('index')
+

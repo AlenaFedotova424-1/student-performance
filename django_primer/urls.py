@@ -22,4 +22,5 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('student/add/', views.StudentCreateView.as_view(), name='student_add'),
+    path('student/<int:pk>/edit/', views.StudentUpdateView.as_view(), name='student_edit'),
 ]

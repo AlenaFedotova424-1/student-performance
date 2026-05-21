@@ -2,17 +2,36 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Добавление студента</title>
+    <title>{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} студента</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Добавление нового студента</h1>
+        <h1>{% if form.instance.pk %}Редактирование студента{% else %}Добавление студента{% endif %}</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
 
-            <button type="submit" class="btn btn-success">Сохранить</button>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Имя:</label>
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Фамилия:</label>
+                        {{ form.surname }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                        <label>Email:</label>
+                        {{ form.email }}
+                    </div>
+            <button type="submit" class="btn btn-success">
+                {% if form.instance.pk %}Сохранить изменения{% else %}Сохранить{% endif %}
+            </button>
             <a href="{% url 'index' %}" class="btn btn-default">Отмена</a>
         </form>
     </div>
