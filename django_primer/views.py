@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
-
 from django.views.generic.base import TemplateView
-
 from .models import Score
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from .models import Student
 
 
 class IndexView(TemplateView):
@@ -20,11 +21,16 @@ class IndexView(TemplateView):
             subjects.add(subject_name)
             student_scores[score.student][subject_name] = score.value
 
+        all_students = Student.objects.all()
+        for student in all_students:
+            if student not in student_scores:
+                student_scores[student] = {}
+
         subjects = sorted(subjects)
         student_statistics = [
             {
                 'student': student,
-                'scores': [f'{scores[subject]:.1f}' for subject in subjects]
+                'scores': [f'{scores.get(subject, "-"):.1f}' if scores.get(subject) else '-' for subject in subjects]
             }
             for student, scores in student_scores.items()
         ]
@@ -35,3 +41,9 @@ class IndexView(TemplateView):
             }
         )
         return context
+
+class StudentCreateView(CreateView):
+    model = Student
+    fields = ['name', 'surname', 'email']
+    template_name = 'student_form.html'
+    success_url = reverse_lazy('index')

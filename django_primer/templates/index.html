@@ -10,7 +10,13 @@
 	<body>
         <div class="container">
             <h1 style="text-align:center;">Успеваемость студентов</h1>
-
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <a href="{% url 'student_add' %}" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span> Добавить студента
+                    </a>
+                </div>
+            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>
