@@ -50,11 +50,26 @@ class IndexView(TemplateView):
                 'scores': scores_list,
                 'average': average_score
             })
+        best_student = None
+        worst_student = None
+        best_avg = -1
+        worst_avg = 6
+        for statistic in student_statistics:
+            average = statistic['average']
+            if average > 0:
+                if average > best_avg:
+                    best_avg = average
+                    best_student = statistic
+                if average < worst_avg:
+                    worst_avg = average
+                    worst_student = statistic
 
         context.update(
             {
                 'subjects': subjects,
-                'student_statistics': student_statistics
+                'student_statistics': student_statistics,
+                'best_student': best_student,
+                'worst_student': worst_student,
             }
         )
         return context
