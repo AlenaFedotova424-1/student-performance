@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} предмета</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="col-md-12">
+                <a href="{% url 'subject_list' %}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Назад к предметам
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            {% if form.instance.pk %}Редактирование предмета{% else %}Добавление нового предмета{% endif %}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label>Название предмета:</label>
+                                {{ form.name }}
+                            </div>
+
+                            <button type="submit" class="btn btn-success">
+                                {% if form.instance.pk %}Сохранить изменения{% else %}Сохранить{% endif %}
+                            </button>
+                            <a href="{% url 'subject_list' %}" class="btn btn-default">Отмена</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</body>
+</html>

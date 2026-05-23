@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Удаление предмета</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Подтверждение удаления</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Вы уверены, что хотите удалить предмет <strong>{{ subject.name }}</strong>?</p>
+                        <p class="text-danger">Внимание! Все оценки по этому предмету также будут удалены.</p>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Да, удалить</button>
+                            <a href="{% url 'subject_list' %}" class="btn btn-default">Отмена</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

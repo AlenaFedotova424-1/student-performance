@@ -4,7 +4,7 @@ from django.views.generic.base import TemplateView
 from .models import Score
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Student
+from .models import Student, Subject
 
 
 class IndexView(TemplateView):
@@ -15,10 +15,9 @@ class IndexView(TemplateView):
         scores = Score.objects.all()
         student_scores = defaultdict(dict)
 
-        subjects = set()
+        subjects = [subject.name for subject in Subject.objects.all().order_by('name')]
         for score in scores:
             subject_name = score.subject.name
-            subjects.add(subject_name)
             student_scores[score.student][subject_name] = score.value
 
         all_students = Student.objects.all()
@@ -58,4 +57,30 @@ class StudentDeleteView(DeleteView):
     model = Student
     template_name = 'student_confirm_delete.html'
     success_url = reverse_lazy('index')
+
+class SubjectListView(TemplateView):
+    template_name = 'subject_list.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["subjects"] = Subject.objects.all().order_by('name')
+        return context
+
+class SubjectCreateView(CreateView):
+    model = Subject
+    fields = ['name']
+    template_name = 'subject_form.html'
+    success_url = reverse_lazy('subject_list')
+
+class SubjectUpdateView(UpdateView):
+    model = Subject
+    fields = ['name']
+    template_name = 'subject_form.html'
+    success_url = reverse_lazy('subject_list')
+
+class SubjectDeleteView(DeleteView):
+    model = Subject
+    template_name = 'subject_confirm_delete.html'
+    success_url = reverse_lazy('subject_list')
+
+
 
