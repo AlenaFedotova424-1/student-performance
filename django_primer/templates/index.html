@@ -31,6 +31,7 @@
                     {% for subject in subjects %}
                       <th>{{subject}}</th>
                     {% endfor %}
+                    <th>Средний балл</th>
                     <th>Действия</th>
                 </tr>
                 </thead>
@@ -42,6 +43,13 @@
                              {% for score in statistics.scores %}
                                 <td>{{score}}</td>
                               {% endfor %}
+                            <td style="font-weight: bold; {% if statistics.average >= 4 %}color: green;{% elif statistics.average >= 3 %}color: orange;{% elif statistics.average > 0 %}color: red;{% endif %}">
+                                {% if statistics.average > 0 %}
+                                    {{ statistics.average }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td class="text-nowrap">
                                 <a href="{% url 'student_edit' statistics.student.id %}" class="btn btn-xs btn-primary">
                                     <span class="glyphicon glyphicon-pencil"></span>

@@ -13,10 +13,12 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
+
         scores = Score.objects.all()
         student_scores = defaultdict(dict)
 
         subjects = [subject.name for subject in Subject.objects.all().order_by('name')]
+
         for score in scores:
             subject_name = score.subject.name
             student_scores[score.student][subject_name] = score.value
@@ -26,14 +28,29 @@ class IndexView(TemplateView):
             if student not in student_scores:
                 student_scores[student] = {}
 
-        subjects = sorted(subjects)
-        student_statistics = [
-            {
+        student_statistics = []
+        for student, scores_dict in student_scores.items():
+            scores_list = []
+            total_score = 0
+            score_count = 0
+
+            for subject in subjects:
+                if subject in scores_dict:
+                    score_value = scores_dict[subject]
+                    scores_list.append(f'{score_value:.1f}')
+                    total_score += score_value
+                    score_count += 1
+                else:
+                    scores_list.append('-')
+
+            average_score = round(total_score / score_count, 2) if score_count > 0 else 0
+
+            student_statistics.append({
                 'student': student,
-                'scores': [f'{scores.get(subject, "-"):.1f}' if scores.get(subject) else '-' for subject in subjects]
-            }
-            for student, scores in student_scores.items()
-        ]
+                'scores': scores_list,
+                'average': average_score
+            })
+
         context.update(
             {
                 'subjects': subjects,
