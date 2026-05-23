@@ -28,4 +28,8 @@ urlpatterns = [
     path('subject/add/', views.SubjectCreateView.as_view(), name='subject_add'),
     path('subject/<int:pk>/edit/', views.SubjectUpdateView.as_view(), name='subject_edit'),
     path('subject/<int:pk>/delete/', views.SubjectDeleteView.as_view(), name='subject_delete'),
+    path('score/', views.ScoreListView.as_view(), name='score_list'),
+    path('score/add/<int:student_id>/<int:subject_id>/', views.ScoreAddView.as_view(), name='score_add'),
+    path('score/<int:pk>/edit/', views.ScoreEditView.as_view(), name='score_edit'),
+    path('score/<int:pk>/delete/', views.ScoreDeleteView.as_view(), name='score_delete'),
 ]

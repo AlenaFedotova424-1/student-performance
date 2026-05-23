@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
 from django.views.generic.base import TemplateView
-from .models import Score
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Student, Subject
+from .models import Student, Subject, Score
+from django.shortcuts import redirect, get_object_or_404
+from django.views import View
 
 
 class IndexView(TemplateView):
@@ -81,6 +82,49 @@ class SubjectDeleteView(DeleteView):
     model = Subject
     template_name = 'subject_confirm_delete.html'
     success_url = reverse_lazy('subject_list')
+
+
+class ScoreListView(TemplateView):
+    template_name = 'score_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['scores'] = Score.objects.select_related('student', 'subject').all().order_by('-id')
+        context['students'] = Student.objects.all().order_by('surname')
+        context['subjects'] = Subject.objects.all().order_by('name')
+
+        return context
+
+class ScoreAddView(CreateView):
+    def post(self, request, student_id, subject_id):
+        value = request.POST.get('value')
+        student = get_object_or_404(Student, id=student_id)
+        subject = get_object_or_404(Subject, id=subject_id)
+
+        score, created = Score.objects.get_or_create(
+            student=student,
+            subject=subject,
+            defaults={'value': value}
+        )
+        if not created:
+            score.value = value
+            score.save()
+
+        return redirect('score_list')
+
+class ScoreEditView(UpdateView):
+    model = Score
+    fields = ['value']
+    template_name = 'score_form.html'
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+class ScoreDeleteView(DeleteView):
+    model = Score
+    template_name = 'score_confirm_delete.html'
+    def get_success_url(self):
+        return reverse_lazy('index')
 
 
 

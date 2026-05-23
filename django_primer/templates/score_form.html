@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Редактирование оценки</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="cantainer">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Редактирование оценки</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p><strong>Студент:</strong> {{ score.student.fio }}</p>
+                        <p><strong>Предмет:</strong> {{ score.subject.name }}</p>
+                        <p><strong>Текущая оценка:</strong> {{ score.value }}</p>
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label>Новая оценка (от 0 до 5):</label>
+                                {{form.value }}
+                            </div>
+                            <button type="submit" class="btn btn-success">Сохранить</button>
+                            <a href="{% url 'index' %}" class="btn btn-default">Отмена</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</body>
+</html>

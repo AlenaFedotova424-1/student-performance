@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Управление оценками</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="col-md-12">
+                <a href="{% url 'index' %}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Назад к успеваемости
+                </a>
+                <a href="{% url 'subject_list' %}" class="btn btn-info">
+                    <span class="glyphicon glyphicon-book"></span> Управление предметами
+                </a>
+            </div>
+        </div>
+
+        <h1 style="text-align:center;">Управление оценками</h1>
+
+        <div class="panel panel-default" style="margin-bottom: 30px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Добавить новую оценку</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" action="{% url 'score_add' 0 0 %}" id="addScoreForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-5">
+                            <select name="student_id" class="form-control" required id="studentSelect">
+                                <option value="">Выберите студента</option>
+                                {% for student in students %}
+                                    <option value="{{ student.id }}">{{ student.fio }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <select name="subject_id" class="form-control" required id="subjectSelect">
+                                <option value="">Выберите предмет</option>
+                                {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" name="value" step="0.1" min="0" max="5" class="form-control" placeholder="Оценка" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-success">
+                                <span class="glyphicon glyphicon-plus"></span> Добавить оценку
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Студент</th>
+                    <th>Предмет</th>
+                    <th>Оценка</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in scores %}
+                    <tr>
+                        <td>{{ score.id }}</td>
+                        <td>{{ score.student.fio }}</td>
+                        <td>{{ score.subject.name }}</td>
+                        <td style="font-weight: bold; {% if score.value < 3 %}color: red;{% elif score.value >= 4 %}color: green;{% endif %}">
+                            {{ score.value }}
+                        </td>
+                        <td>
+                            <a href="{% url 'score_edit' score.id %}" class="btn btn-xs btn-primary">
+                                <span class="glyphicon glyphicon-pencil"></span> Редактировать
+                            </a>
+                            <a href="{% url 'score_delete' score.id %}" class="btn btn-xs btn-danger"
+                               onclick="return confirm('Удалить оценку {{ score.value }} для {{ score.student.fio }} по предмету {{ score.subject.name }}?');">
+                                <span class="glyphicon glyphicon-trash"></span> Удалить
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align:center;">Нет оценок</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+         document.getElementById('addScoreForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var studentId = this.querySelector('[name="student_id"]').value;
+        var subjectId = this.querySelector('[name="subject_id"]').value;
+        var value = this.querySelector('[name="value"]').value;
+
+        if (studentId && subjectId && value) {
+            this.action = '/score/add/' + studentId + '/' + subjectId + '/';
+            this.submit();
+        } else {
+            alert('Пожалуйста, заполните все поля');
+        }
+    });
+    </script>
+</body>
+</html>
