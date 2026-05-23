@@ -5,6 +5,7 @@ class Student(models.Model):
     name = models.CharField(max_length=200, null=False)
     surname = models.CharField(max_length=200, null=False)
     email = models.EmailField(null=False)
+    group = models.CharField(max_length=20, blank=True, null=True, verbose_name='Номер группы')
 
     @property
     def fio(self):

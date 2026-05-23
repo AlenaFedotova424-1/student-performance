@@ -28,6 +28,7 @@
                 <tr>
                   <th>#</th>
                   <th>ФИО</th>
+                    <th>Группа</th>
                     {% for subject in subjects %}
                       <th>{{subject}}</th>
                     {% endfor %}
@@ -40,6 +41,7 @@
                         <tr>
                             <th scope="row">{{statistics.student.id}}</th>
                             <td>{{statistics.student.fio}}</td>
+                            <td>{{ statistics.student.group|default:"-" }}</td>
                              {% for score in statistics.scores %}
                                 <td>{{score}}</td>
                               {% endfor %}

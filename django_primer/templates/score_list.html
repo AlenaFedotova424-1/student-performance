@@ -33,7 +33,7 @@
                             <select name="student_id" class="form-control" required id="studentSelect">
                                 <option value="">Выберите студента</option>
                                 {% for student in students %}
-                                    <option value="{{ student.id }}">{{ student.fio }}</option>
+                                    <option value="{{ student.id }}">{{ student.fio }} ({{ student.group|default:"без группы" }})</option>
                                 {% endfor %}
                             </select>
                         </div>

@@ -76,13 +76,13 @@ class IndexView(TemplateView):
 
 class StudentCreateView(CreateView):
     model = Student
-    fields = ['name', 'surname', 'email']
+    fields = ['name', 'surname', 'email', 'group']
     template_name = 'student_form.html'
     success_url = reverse_lazy('index')
 
 class StudentUpdateView(UpdateView):
     model = Student
-    fields = ['name', 'surname', 'email']
+    fields = ['name', 'surname', 'email', 'group']
     template_name = 'student_form.html'
     success_url = reverse_lazy('index')
 
